@@ -9,6 +9,7 @@ __license__ = ""
 __history__ = """ """
 __version__ = "1.1.I02.1 ($Rev: 1 $)"
 
+import unittest
 import json
 from tests.BaseCase import BaseCase
 
@@ -41,6 +42,8 @@ class TestUserLogin(BaseCase):
         self.assertEqual(str, type(token_response['refresh_token']))
         self.assertEqual(str, type(token_response['data']))
         self.assertEqual(200, response.status_code)
+
+        return token_response['access_token']
 
     def test_login_already_existing_user(self):
         user_name = "jorge.morfinez.m@gmail.com"

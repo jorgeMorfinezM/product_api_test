@@ -13,97 +13,135 @@ import os
 import unittest
 import json
 from tests.BaseCase import BaseCase
+from tests.UserAuthenticationTest import TestUserLogin
 
 
 class TestManageCategory(BaseCase):
+    test_user_obj = TestUserLogin()
 
-    def test_search_property_filters(self):
-        payload = {}
-        # files = [('archivo', ('file', open('filters_properties_test.json', 'rb'), 'application/octet-stream'))]
+    token_login = test_user_obj.test_successful_login()
 
-        my_file_load = os.path.join("filters_properties_test.json")
+    def test_manage_category_create(self):
 
-        # files = {'archivo': open('filters_properties_test.json', 'rb')}
-
-        # files = {
-        #     'data': (None, json.dumps(payload), 'application/json'),
-        #     'archivo': (os.path.basename('filters_properties_test.json'), open('filters_properties_test.json', 'rb'),
-        #                 'application/octet-stream')
-        # }
+        payload = json.dumps({
+            "nombre_categoria": "Gaming",
+            "descrippcion_corta_categoria": "Articulos perifericos Gamer",
+            "estatus_categoria": "activo"
+        })
 
         header_request = {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + str(self.token_login)
         }
 
-        # response_search = self.app.get('/api/v1/manager/property/filter', headers=header_request, data=payload,
-        #                                files=files)
-        # response_search = self.app.get('/api/v1/manager/property/filter/', files=files)
-
-        # my_file = FileStorage(
-        #     stream=open(my_file_load, "rb"),
-        #     filename="filters_properties_test.json",
-        #     content_type="application/octet-stream",
-        # ),
-
-        response_search = self.app.get(
-            "/api/v1/manager/property/filter/",
-            data={
-                "archivo": open(my_file_load, "rb"),
-            },
-            content_type="multipart/form-data"
-        )
+        response_create = self.app.post('/api/v1.0/manager/product/category/', data=payload, headers=header_request)
 
         # When
-        list_property_response = json.loads(response_search.get_data(as_text=True))
+        category_response = json.loads(response_create.get_data(as_text=True))
 
-        print("Response endpoint: ", list_property_response)
+        print("Response endpoint: ", category_response)
 
         # Then
-        self.assertEqual(200, response_search.status_code)
-        self.assertEqual(str, type(list_property_response["Propiedad"]["Domicilio"]))
-        self.assertEqual(str, type(list_property_response["Propiedad"]["DomicilioEstado"]))
-        self.assertEqual(str, type(list_property_response["Propiedad"]["DomicilioCiudad"]))
-        self.assertEqual(str, type(list_property_response["Propiedad"]["Precio"]))
-        self.assertEqual(str, type(list_property_response["Propiedad"]["Descripcion"]))
+        self.assertEqual(200, response_create.status_code)
+        self.assertEqual(str, type(category_response["id_categoria"]))
+        self.assertEqual(str, type(category_response["nombre_categoria"]))
+        self.assertEqual(str, type(category_response["descripcion_categoria"]))
+        self.assertEqual(str, type(category_response["estatus_categoria"]))
 
-    def test_properties_with_non_existing_file(self):
-        payload = {}
-        files = [
-            ('archivo', ('file', open('test/test.json', 'rb'), 'application/octet-stream'))
-        ]
+    def test_manage_category_update(self):
+        payload = json.dumps({
+            "nombre_categoria": "Perifericos Gaming",
+            "descrippcion_corta_categoria": "Articulos perifericos Gamer",
+            "estatus_categoria": "activo"
+        })
 
         header_request = {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + str(self.token_login)
         }
 
-        response_search = self.app.get('/api/v1/manager/property/filter',
-                                       headers=header_request, data=payload, files=files)
+        response_update = self.app.put('/api/v1.0/manager/product/category/', data=payload, headers=header_request)
 
         # When
-        list_property_response = json.loads(response_search.get_data(as_text=True))
+        category_response = json.loads(response_update.get_data(as_text=True))
 
-        print("Response endpoint: ", list_property_response)
+        print("Response endpoint: ", category_response)
 
         # Then
-        self.assertEqual(str, type(list_property_response['message']))
-        self.assertEqual(int, type(list_property_response['data']))
+        self.assertEqual(200, response_update.status_code)
+        self.assertEqual(str, type(category_response["id_categoria"]))
+        self.assertEqual(str, type(category_response["nombre_categoria"]))
+        self.assertEqual(str, type(category_response["descripcion_categoria"]))
+        self.assertEqual(str, type(category_response["estatus_categoria"]))
+        self.assertEqual(str, type(category_response["creation_date"]))
+        self.assertEqual(str, type(category_response["last_update_date"]))
 
-    def test_properties_with_no_file(self):
-        payload = {}
-        files = []
+    def test_manage_category_delete(self):
+        payload = json.dumps({
+            "nombre_categoria": "Perifericos Gaming",
+            "descrippcion_corta_categoria": "Articulos perifericos Gamer",
+            "estatus_categoria": "activo"
+        })
 
         header_request = {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + str(self.token_login)
         }
 
-        response_search = self.app.get('/api/v1/manager/property/filter',
-                                       headers=header_request, data=payload, files=files)
+        response_delete = self.app.delete('/api/v1.0/manager/product/category/', data=payload, headers=header_request)
 
         # When
-        list_property_response = json.loads(response_search.get_data(as_text=True))
+        category_response = json.loads(response_delete.get_data(as_text=True))
 
-        print("Response endpoint: ", list_property_response)
+        print("Response endpoint: ", category_response)
 
         # Then
-        self.assertEqual(str, type(list_property_response['message']))
-        self.assertEqual(int, type(list_property_response['data']))
+        self.assertEqual(200, response_delete.status_code)
+        self.assertEqual(str, type(category_response["id_categoria"]))
+        self.assertEqual(str, type(category_response["nombre_categoria"]))
+        self.assertEqual(str, type(category_response["descripcion_categoria"]))
+        self.assertEqual(str, type(category_response["estatus_categoria"]))
+        self.assertEqual(str, type(category_response["creation_date"]))
+        self.assertEqual(str, type(category_response["last_update_date"]))
+
+    def test_manage_category_get_all(self):
+        header_request = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + str(self.token_login)
+        }
+
+        # When
+        response = self.app.get('/api/v1.0/manager/product/category/', headers=header_request)
+
+        category_response = json.loads(response.get_data(as_text=True))
+
+        # Then
+        self.assertEqual(str, type(category_response['Categoria']["id_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["nombre_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["descripcion_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["estatus_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["creation_date"]))
+        self.assertEqual(str, type(category_response['Categoria']["last_update_date"]))
+        self.assertEqual(200, response.status_code)
+
+    def test_search_category_filter(self):
+        payload = json.dumps({
+            "nombre_categoria": "Gaming",
+            "estatus_categoria": "activo"
+        })
+
+        # When
+        response = self.app.get('/api/v1.0/manager/product/category/filter',
+                                headers={"Content-Type": "application/json"},
+                                data=payload)
+
+        category_response = json.loads(response.get_data(as_text=True))
+
+        # Then
+        self.assertEqual(str, type(category_response['Categoria']["id_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["nombre_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["descripcion_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["estatus_categoria"]))
+        self.assertEqual(str, type(category_response['Categoria']["creation_date"]))
+        self.assertEqual(str, type(category_response['Categoria']["last_update_date"]))
+        self.assertEqual(200, response.status_code)
