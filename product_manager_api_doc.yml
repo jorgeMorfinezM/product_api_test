@@ -1,0 +1,1011 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based coping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+info:
+  version: "1.0.0"
+  title: Product Manager - Gestor de Categorias y Productos en una Tienda
+  description: |
+    </br>
+    API para Gestionar Categorias y Productos.
+    </br>
+    </br>
+  contact: 
+      name: API Support
+      url: https://github.com/jorgeMorfinezM/product_catalog_api/
+      email: jorge.morfinez.m@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  
+host:
+  localhost:8080
+basePath: "/api/v1.0/manager"
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: "Login"
+    description: "Endpoint to get Token Bearer POST the username and password registered"
+  - name: "Manage User"
+    description: "Endpoint to manage Users data"
+  - name: "Retrieve all Users"
+    description: "Endpoint to get all Users"
+  - name: "Manage Categories"
+    description: "Endpoint to manage Categories data"
+  - name: "Retrieve Categories by Filters"
+    description: "Endpoint to insert and get all Towns (manage)"
+  - name: "Manage Products"
+    description: "Endpoint to insert and get all Cities (manage)"
+  - name: "Retrieve Products by Filters"
+    description: "Endpoint to insert and get all Suburbs (manage)"
+
+paths:
+  /login/:
+    post:
+      tags:
+        - "Login"
+      description:
+        Get Bearer Token by username (email) and password to authenticate to the API endpoints.
+      parameters:
+        - name: UserRequest
+          in: body
+          description: Payload with authentication credentials to API.
+          required: true
+          schema:
+            $ref: '#/definitions/UserRequest'
+      responses:
+        200:
+          description: Successful response Token Bearer
+          schema:
+            title: TokenResponse
+            type: array
+            items:
+              $ref: '#/definitions/TokenResponse'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /user/:
+    put:
+      tags:
+        - "Manage User"
+      description:
+        Manage user data to update.
+      parameters:
+        - name: UserRequest
+          in: body
+          description: Payload with data to updated.
+          required: true
+          schema:
+            $ref: '#/definitions/UserRequest'
+      responses:
+        200:
+          description: Successful response User updated
+          schema:
+            title: UserResponse
+            type: array
+            items:
+              $ref: '#/definitions/UserResponse'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - "Manage User"
+      description:
+        Manage user data to delete.
+      parameters:
+        - name: UserRequest
+          in: body
+          description: Payload with data to inactivate.
+          required: true
+          schema:
+            $ref: '#/definitions/UserRequest'
+      responses:
+        200:
+          description: Successful response Inactivate User
+          schema:
+            title: UserResponse
+            type: array
+            items:
+              $ref: '#/definitions/UserResponse'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /user/list:
+    get:
+      tags:
+        - "Retrieve all Users"
+      description:
+        Get All Users registered.
+      parameters:
+        - name: Pagination
+          in: body
+          description: Payload with pagination data to Get.
+          required: true
+          schema:
+            $ref: '#/definitions/Pagination'
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: UserResponse
+            type: array
+            items:
+              $ref: '#/definitions/UserResponse'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /product/category:
+    post:
+      tags:
+        - "Manage Categories"
+      description:
+        Endpoint to manage data for Categories of Products (Create).
+      parameters:
+        - name: RequestCategory
+          in: body
+          description: Payload with States data to insert.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestCategory'
+      responses:
+        200:
+          description: Successful response States Register
+          schema:
+            title: ResponseCategories
+            type: array
+            items:
+              $ref: '#/definitions/ResponseCategories'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    put:
+      tags:
+        - "Manage Categories"
+      description:
+          Endpoint to manage data for Categories of Products (Update).
+      parameters:
+        - name: RequestCategory
+          in: body
+          description: Payload with data to updated.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestCategory'
+      responses:
+        200:
+          description: Successful response User updated
+          schema:
+            title: ResponseCategories
+            type: array
+            items:
+              $ref: '#/definitions/ResponseCategories'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - "Manage Categories"
+      description:
+          Endpoint to manage data for Categories of Products (Delete).
+      parameters:
+        - name: RequestCategory
+          in: body
+          description: Payload with data to inactivate.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestCategory'
+      responses:
+        200:
+          description: Successful response Inactivate User
+          schema:
+            title: ResponseCategories
+            type: array
+            items:
+              $ref: '#/definitions/ResponseCategories'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    get:
+      tags:
+        - "Manage Categories"
+      description:
+        Get data States.
+      parameters:
+        - name: Pagination
+          in: body
+          description: Payload with pagination data to Get.
+          required: false
+          schema:
+            $ref: '#/definitions/Pagination'
+      responses:
+        200:
+          description: Successful response retrieve Categories
+          schema:
+            title: ResponseCategories
+            type: array
+            items:
+              $ref: '#/definitions/ResponseCategories'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /product/category/filter/:
+    get:
+      tags:
+        - "Retrieve Categories by Filters"
+      description:
+        Get All States registered by filters.
+      parameters:
+        - name: FilterCategory
+          in: body
+          description: Payload with filters to find Category.
+          required: true
+          schema:
+            $ref: '#/definitions/FilterCategory'
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: ResponseCategories
+            type: array
+            items:
+              $ref: '#/definitions/ResponseCategories'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /product:
+    post:
+      tags:
+        - "Manage Products"
+      description:
+        Endpoint to insert Products (manage).
+      parameters:
+        - name: RequestProduct
+          in: body
+          description: Payload with Product data to insert.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestProduct'
+      responses:
+        200:
+          description: Successful response Product Register
+          schema:
+            title: ResponseProducts
+            type: array
+            items:
+              $ref: '#/definitions/ResponseProducts'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    put:
+      tags:
+        - "Manage Products"
+      description:
+        Endpoint to manage data for Products (Update).
+      parameters:
+        - name: RequestProduct
+          in: body
+          description: Payload with data to updated.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestProduct'
+      responses:
+        200:
+          description: Successful response Product updated
+          schema:
+            title: ResponseProducts
+            type: array
+            items:
+              $ref: '#/definitions/ResponseProducts'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - "Manage Products"
+      description:
+        Endpoint to manage data for Categories of Products (Delete).
+      parameters:
+        - name: RequestProduct
+          in: body
+          description: Payload with data to inactivate.
+          required: true
+          schema:
+            $ref: '#/definitions/RequestProduct'
+      responses:
+        200:
+          description: Successful response Inactivate Product
+          schema:
+            title: ResponseProducts
+            type: array
+            items:
+              $ref: '#/definitions/ResponseProducts'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+    get:
+      tags:
+        - "Manage Products"
+      description:
+        Get data Products.
+      parameters:
+        - name: Pagination
+          in: body
+          description: Payload with pagination data to Get.
+          required: false
+          schema:
+            $ref: '#/definitions/Pagination'
+      responses:
+        200:
+          description: Successful response Product Register
+          schema:
+            title: ResponseProducts
+            type: array
+            items:
+              $ref: '#/definitions/ResponseProducts'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+  /product/filter/:
+    get:
+      tags:
+        - "Retrieve Products by Filters"
+      description:
+        Get All Products registered by filters.
+      parameters:
+        - name: FilterProduct
+          in: body
+          description: Payload with filters to find Towns.
+          required: true
+          schema:
+            $ref: '#/definitions/FilterProduct'
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: ResponseProducts
+            type: array
+            items:
+              $ref: '#/definitions/ResponseProducts'
+        404:
+          description: Page Not Found
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+        409:
+          description: Request Data Conflict
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        401:
+          description: 401 Unauthorized
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+        500:
+          description: Server Error
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Error'
+
+definitions:
+  Error:
+    allOf:
+      - $ref: '#/definitions/Error'
+      - required:
+        - error_code
+        - error_message
+        type: "object"
+        properties:
+          error_code:
+            type: integer
+            format: int32
+          error_message:
+            type: string
+
+  UserResponse:
+    allOf:
+      - $ref: '#/definitions/UserResponse'
+      - required:
+          - Id
+          - Username
+          - Password
+          - IsActive
+          - IsStaff
+          - IsSuperuser
+          - CreationDate
+          - LastUpdateDate
+        type: "object"
+        properties:
+          Id:
+            type: integer
+            format: int32
+          Username:
+            type: string
+          Password:
+            type: string
+          IsActive:
+            type: string
+          IsStaff:
+            type: string
+          IsSuperuser:
+            type: string
+          CreationDate:
+            type: string
+          LasUpdateDate:
+            type: string
+
+  UserRequest:
+    allOf:
+      - $ref: '#/definitions/UserRequest'
+      - required:
+        - username
+        - password
+        - is_active
+        - is_staff
+        - is_superuser
+        type: "object"
+        properties:
+          username:
+            type: string
+          password:
+            type: string
+          is_active:
+            type: string
+          is_staff:
+            type: string
+          is_superuser:
+            type: string
+
+  TokenResponse:
+    allOf:
+      - $ref: '#/definitions/TokenResponse'
+      - required:
+        - message_login
+        - access_token
+        - refresh_token
+        - data
+        type: "object"
+        properties:
+          message_login:
+            type: string
+          access_token:
+            type: string
+          refresh_token:
+            type: string
+          data:
+            type: array
+            items:
+              $ref: '#/definitions/UserResponse'
+
+  Pagination:
+    allOf:
+      - $ref: '#/definitions/Pagination'
+      - required:
+        - offset
+        - limit
+        type: "object"
+        properties:
+          offset:
+            type: integer
+            format: int64
+          limit:
+            type: integer
+            format: int64
+
+  RequestCategory:
+    allOf:
+      - $ref: '#/definitions/RequestCategory'
+      - required:
+        - nombre_categoria
+        - descrippcion_corta_categoria
+        - estatus_categoria
+        type: "object"
+        properties:
+          nombre_categoria:
+            type: string
+          descrippcion_corta_categoria:
+            type: string
+          estatus_categoria:
+            type: string
+
+  ResponseCategories:
+    allOf:
+      - $ref: '#/definitions/ResponseCategories'
+      - required:
+        - id_categoria
+        - nombre_categoria
+        - descripcion_categoria
+        - estatus_categoria
+        - creation_date
+        - last_update_date
+        type: "object"
+        properties:
+          id_categoria:
+            type: integer
+            format: int64
+          nombre_categoria:
+            type: string
+          descripcion_categoria:
+            type: string
+          estatus_categoria:
+            type: string
+          creation_date:
+            type: string
+          last_update_date:
+            type: string
+
+  FilterCategory:
+    allOf:
+      - $ref: '#/definitions/FilterCategory'
+      - required:
+          - nombre_categoria
+          - estatus_categoria
+        type: "object"
+        properties:
+          nombre_categoria:
+            type: string
+          estatus_categoria:
+            type: string
+
+  RequestProduct:
+    allOf:
+      - $ref: '#/definitions/RequestProduct'
+      - required:
+          - sku_producto
+          - marca_producto
+          - unidad_medida_producto
+          - inventario_producto
+          - nombre_producto
+          - titulo_producto
+          - descripcion_larga
+          - url_imagen
+          - precio_unitario
+          - costo_impuesto
+          - tasa_impuesto
+          - estatus_producto
+          - producto_publicado
+          - volumetria_largo_producto
+          - volumetria_ancho_producto
+          - volumetria_alto_producto
+          - volumetria_peso_producto
+          - id_categoria_producto
+          - id_categoria_padre_producto
+        type: "object"
+        properties:
+          sku_producto:
+            type: string
+          marca_producto:
+            type: string
+          unidad_medida_producto:
+            type: string
+          inventario_producto:
+            type: integer
+            format: int64
+          nombre_producto:
+            type: string
+          titulo_producto:
+            type: string
+          descripcion_larga:
+            type: string
+          url_imagen:
+            type: string
+          precio_unitario:
+            type: integer
+            format: int64
+          costo_impuesto:
+            type: integer
+            format: int64
+          tasa_impuesto:
+            type: integer
+            format: int64
+          estatus_producto:
+            type: string
+          producto_publicado:
+            type: string
+          volumetria_largo_producto:
+            type: integer
+            format: int64
+          volumetria_ancho_producto:
+            type: integer
+            format: int64
+          volumetria_alto_producto:
+            type: integer
+            format: int64
+          volumetria_peso_producto:
+            type: integer
+            format: int64
+          id_categoria_producto:
+            type: integer
+            format: int64
+          id_categoria_padre_producto:
+            type: integer
+            format: int64
+
+  ResponseProducts:
+    allOf:
+      - $ref: '#/definitions/ResponseProducts'
+      - required:
+          - id_producto
+          - sku_producto
+          - marca_producto
+          - unidad_medida_producto
+          - inventario_producto
+          - nombre_producto
+          - titulo_producto
+          - descripcion_larga
+          - url_imagen
+          - precio_unitario
+          - costo_impuesto
+          - tasa_impuesto
+          - estatus_producto
+          - producto_publicado
+          - volumetria_largo_producto
+          - volumetria_ancho_producto
+          - volumetria_alto_producto
+          - volumetria_peso_producto
+          - id_categoria_producto
+          - id_categoria_padre_producto
+          - cambio_realizado
+          - contador_busqueda
+          - fecha_alta
+          - fecha_actualizacion
+        type: "object"
+        properties:
+          id_producto:
+            type: integer
+            format: int64
+          sku_producto:
+            type: string
+          marca_producto:
+            type: string
+          unidad_medida_producto:
+            type: string
+          inventario_producto:
+            type: string
+          nombre_producto:
+            type: string
+          titulo_producto:
+            type: string
+          descripcion_larga:
+            type: string
+          url_imagen:
+            type: string
+          precio_unitario:
+            type: string
+          costo_impuesto:
+            type: string
+          tasa_impuesto:
+            type: string
+          estatus_producto:
+            type: string
+          producto_publicado:
+            type: string
+          volumetria_largo_producto:
+            type: string
+          volumetria_ancho_producto:
+            type: string
+          volumetria_alto_producto:
+            type: string
+          volumetria_peso_producto:
+            type: string
+          id_categoria_producto:
+            type: string
+          id_categoria_padre_producto:
+            type: string
+          cambio_realizado:
+            type: string
+          contador_busqueda:
+            type: string
+          fecha_alta:
+            type: string
+          fecha_actualizacion:
+            type: string
+
+  FilterProduct:
+    allOf:
+      - $ref: '#/definitions/FilterProduct'
+      - required:
+          - sku_producto
+          - marca_producto
+          - nombre_producto
+          - titulo_producto
+          - estatus_producto
+        type: "object"
+        properties:
+          sku_producto:
+            type: string
+          marca_producto:
+            type: string
+          nombre_producto:
+            type: string
+          titulo_producto:
+            type: string
+          estatus_producto:
+            type: string
